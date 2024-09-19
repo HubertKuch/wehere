@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/users/")
-public record UserController(AccountService accountService) {
+@RequestMapping("/api/v1/auth/")
+public record AuthController(AccountService accountService) {
 
     @PostMapping("")
     public Account createAccount(@RequestBody AccountBody body) throws ContentBusyException {

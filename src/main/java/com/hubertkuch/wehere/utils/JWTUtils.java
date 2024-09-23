@@ -9,13 +9,16 @@ import java.util.Date;
 
 @Component
 public class JWTUtils {
-    @Value("jwt_secret")
-    private String secret;
+    private String secret = "";
 
-    public String generateToken(String id) {
+    public JWTUtils(@Value("jwt_secret") String secret) {
+        this.secret = secret;
+    }
+
+    public String generateToken(String accountId) {
         return JWT.create()
                 .withSubject("User Details")
-                .withClaim("id", id)
+                .withClaim("id", accountId)
                 .withIssuedAt(new Date())
                 .withIssuer("WeHere")
                 .sign(Algorithm.HMAC256(secret));

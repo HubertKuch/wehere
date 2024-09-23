@@ -1,7 +1,5 @@
 package com.hubertkuch.wehere.filters;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.hubertkuch.wehere.account.AccountDetailsService;
 import com.hubertkuch.wehere.utils.JWTUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -10,17 +8,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@Component
 public class AuthFiler extends OncePerRequestFilter {
     private final JWTUtils jwtUtils;
-    private final AccountDetailsService accountDetailsService;
+    private final UserDetailsService accountDetailsService;
 
-    public AuthFiler(JWTUtils jwtUtils, AccountDetailsService accountDetailsService) {
+    public AuthFiler(JWTUtils jwtUtils, UserDetailsService accountDetailsService) {
         this.jwtUtils = jwtUtils;
         this.accountDetailsService = accountDetailsService;
     }
@@ -31,6 +28,11 @@ public class AuthFiler extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws IOException, ServletException {
+        if (request.getServletPath().toLowerCase().contains("/api/v1/auth")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String header = request.getHeader("Authorization");
 
         if (header == null || !header.startsWith("Bearer ")) {
@@ -42,7 +44,7 @@ public class AuthFiler extends OncePerRequestFilter {
         String userId = jwtUtils.verifyToken(token);
         UserDetails userDetails = accountDetailsService.loadUserByUsername(userId);
         var authToken =
-                new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
+                new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
 
         if(SecurityContextHolder.getContext().getAuthentication() == null){
             SecurityContextHolder.getContext().setAuthentication(authToken);

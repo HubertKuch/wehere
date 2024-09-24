@@ -27,34 +27,37 @@ public class AuthFiler extends OncePerRequestFilter {
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain
-    ) throws IOException, ServletException {
-        if (request.getServletPath().toLowerCase().contains("/api/v1/auth/login") || request.getServletPath()
-                .toLowerCase()
-                .contains("/api/v1/auth/register")) {
+    ) throws IOException {
+        try {
+            if (request.getServletPath().toLowerCase().contains("/api/v1/auth/login") || request.getServletPath()
+                    .toLowerCase()
+                    .contains("/api/v1/auth/register")) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            String header = request.getHeader("Authorization");
+
+            if (header == null || !header.startsWith("Bearer ")) {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT bearer token");
+                return;
+            }
+
+            String token = header.replace("Bearer ", "").trim();
+            String userId = jwtUtils.verifyToken(token);
+
+            UserDetails userDetails = accountDetailsService.loadUserByUsername(userId);
+            var authToken =
+                    new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
+
+            if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
+
             filterChain.doFilter(request, response);
-            return;
-        }
-
-        String header = request.getHeader("Authorization");
-
-        if (header == null || !header.startsWith("Bearer ")) {
+        } catch (Exception exception) {
+            logger.error(exception.getMessage());
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT bearer token");
-            return;
         }
-
-        String token = header.replace("Bearer ", "").trim();
-        String userId = jwtUtils.verifyToken(token);
-
-        System.out.println(userId);
-
-        UserDetails userDetails = accountDetailsService.loadUserByUsername(userId);
-        var authToken =
-                new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
-
-        if (SecurityContextHolder.getContext().getAuthentication() == null) {
-            SecurityContextHolder.getContext().setAuthentication(authToken);
-        }
-
-        filterChain.doFilter(request, response);
     }
 }

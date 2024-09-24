@@ -8,4 +8,5 @@ import java.util.Optional;
 @Repository
 public interface AccountRepository extends JpaRepository<AccountEntity, String> {
     Optional<AccountEntity> findByUsername(String username);
+    Optional<AccountEntity> findByHashtag(String hashtag);
 }

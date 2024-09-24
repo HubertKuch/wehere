@@ -1,26 +1,50 @@
 package com.hubertkuch.wehere.friends;
 
-import com.hubertkuch.wehere.account.Account;
 import com.hubertkuch.wehere.account.AccountEntity;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(name = "friendship")
 public class FriendshipEntity {
     @Id
-    private String id;
+    private String id = UUID.randomUUID().toString();
     @ManyToOne
     @JoinColumn(name = "first_friend_id", referencedColumnName = "id")
-    private AccountEntity firstFriendId;
+    private AccountEntity firstFriend;
     @ManyToOne
     @JoinColumn(name = "second_friend_id", referencedColumnName = "id")
-    private AccountEntity secondFriendId;
+    private AccountEntity secondFriend;
     private Instant createdAt;
 
     @Enumerated(EnumType.STRING)
-    private StatusType status;
+    private FriendshipApprovalStatus status;
+
+    public FriendshipEntity(
+            AccountEntity firstFriend, AccountEntity secondFriendId
+    ) {
+        this.firstFriend = firstFriend;
+        this.secondFriend = secondFriendId;
+        this.status = FriendshipApprovalStatus.PENDING;
+    }
+
+    public FriendshipEntity() {}
+
+    public FriendshipEntity(
+            String id,
+            AccountEntity firstFriend,
+            AccountEntity secondFriend,
+            Instant createdAt,
+            FriendshipApprovalStatus status
+    ) {
+        this.id = id;
+        this.firstFriend = firstFriend;
+        this.secondFriend = secondFriend;
+        this.createdAt = createdAt;
+        this.status = status;
+    }
 
     public String getId() {
         return id;
@@ -30,20 +54,20 @@ public class FriendshipEntity {
         this.id = id;
     }
 
-    public AccountEntity getFirstFriendId() {
-        return firstFriendId;
+    public AccountEntity getFirstFriend() {
+        return firstFriend;
     }
 
-    public void setFirstFriendId(AccountEntity firstFriendId) {
-        this.firstFriendId = firstFriendId;
+    public void setFirstFriend(AccountEntity firstFriendId) {
+        this.firstFriend = firstFriendId;
     }
 
-    public AccountEntity getSecondFriendId() {
-        return secondFriendId;
+    public AccountEntity getSecondFriend() {
+        return secondFriend;
     }
 
-    public void setSecondFriendId(AccountEntity secondFriendId) {
-        this.secondFriendId = secondFriendId;
+    public void setSecondFriend(AccountEntity secondFriendId) {
+        this.secondFriend = secondFriendId;
     }
 
     public Instant getCreatedAt() {
@@ -54,11 +78,11 @@ public class FriendshipEntity {
         this.createdAt = createdAt;
     }
 
-    public StatusType getStatus() {
+    public FriendshipApprovalStatus getStatus() {
         return status;
     }
 
-    public void setStatus(StatusType status) {
+    public void setStatus(FriendshipApprovalStatus status) {
         this.status = status;
     }
 }

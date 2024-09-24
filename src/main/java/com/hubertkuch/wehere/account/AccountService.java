@@ -21,4 +21,8 @@ public record AccountService(AccountRepository accountRepository, PasswordEncode
     public Account getAccount(String username) {
         return accountRepository.findByUsername(username).map(Account::from).orElse(null);
     }
+
+    public Account getAccountByHashtag(String hashtag) {
+        return accountRepository.findByHashtag(hashtag).map(Account::from).orElse(null);
+    }
 }

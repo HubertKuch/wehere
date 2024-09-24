@@ -1,6 +1,6 @@
 package com.hubertkuch.wehere.friends;
 
-public enum StatusType {
+public enum FriendshipApprovalStatus {
     PENDING,
     ACCEPTED,
     REJECTED,

@@ -10,7 +10,16 @@ Content-Type: application/json
 
 ###
 GET http://localhost:8080/api/v1/auth/account
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJVc2VyIERldGFpbHMiLCJpZCI6IjhiODZhNTRmLTRlZTgtNGM2NC05ZTcxLTQyNjAyMzQ0ZjU2MSIsImlhdCI6MTcyNzE5MDU4MSwiaXNzIjoiV2VIZXJlIn0.SPgvo_KJwPdYT9fTaeMQ08boVswYM4btI0K2TVbXlY4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJVc2VyIERldGFpbHMiLCJpZCI6ImFjZDZmODllLTMxMjYtNGQxNS04MTQ3LWM5Y2I4NWJjYTMxZSIsImlhdCI6MTcyNzIxMzYyMywiaXNzIjoiV2VIZXJlIn0.rq7opgRUWKAlWeSXBJ6hG0S3h10OjtMauWd_yXFvy6g
+
+###
+POST http://localhost:8080/api/v1/friendships
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJVc2VyIERldGFpbHMiLCJpZCI6ImFjZDZmODllLTMxMjYtNGQxNS04MTQ3LWM5Y2I4NWJjYTMxZSIsImlhdCI6MTcyNzIxNTExNiwiaXNzIjoiV2VIZXJlIn0.bC6sAkb_b78XepyKLs1CPXCf3Un1w6EKs52ZOH-L7LU
+Content-Type: application/json
+
+{
+  "hashtag": "42dsa"
+}
 
 ###
 GET http://localhost:8080/api/v1/account/genders
@@ -20,6 +29,6 @@ POST http://localhost:8080/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "username": "test3",
-  "password": "test3"
+  "username": "test",
+  "password": "test"
 }

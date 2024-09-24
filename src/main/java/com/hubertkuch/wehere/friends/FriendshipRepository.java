@@ -1,13 +1,19 @@
 package com.hubertkuch.wehere.friends;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
 public interface FriendshipRepository extends JpaRepository<FriendshipEntity, String> {
-    Optional<FriendshipEntity> findByStatusAndFirstFriendId_IdOrSecondFriendId_Id(
-            FriendshipApprovalStatus status,
-            String firstFriendId,
-            String secondFriendId
+    @Query(value = """
+                       SELECT f.* FROM friendship f WHERE\s
+                   (f.status = 'PENDING' OR f.status = 'ACCEPTED')
+                       AND (f.first_friend_id = :first_friend_id or f.second_friend_id = :second_friend_id)
+                  \s""", nativeQuery = true)
+    Optional<FriendshipEntity> findAlreadyExistingRequest(
+            @Param("first_friend_id") String firstFriendId,
+            @Param("second_friend_id") String secondFriendId
     );
 }

@@ -20,7 +20,7 @@ public record FriendshipService(
 
         if (hashtagAccount == null) throw new CannotMakeFriendshipException("Invalid hashtag of friend");
 
-        if (friendshipRepository.findByStatusAndFirstFriendId_IdOrSecondFriendId_Id(FriendshipApprovalStatus.PENDING,
+        if (friendshipRepository.findAlreadyExistingRequest(
                 initiatorId,
                 hashtagAccount.id()
         ).isEmpty()) {

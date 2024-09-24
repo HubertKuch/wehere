@@ -49,7 +49,7 @@ public class AuthFiler extends OncePerRequestFilter {
 
             UserDetails userDetails = accountDetailsService.loadUserByUsername(userId);
             var authToken =
-                    new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
+                    new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userId, userDetails.getAuthorities());
 
             if (SecurityContextHolder.getContext().getAuthentication() == null) {
                 SecurityContextHolder.getContext().setAuthentication(authToken);

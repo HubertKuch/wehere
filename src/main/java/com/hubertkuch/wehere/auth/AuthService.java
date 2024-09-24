@@ -16,9 +16,9 @@ public record AuthService(JWTUtils jwtUtils, AccountService accountService, Pass
             throw new CannotAuthorizeException("Username and password should be set");
         var account = accountService.getAccount(username);
 
-        if (account == null || !passwordEncoder.matches(password, account.getPassword()))
+        if (account == null || !passwordEncoder.matches(password, account.password()))
             throw new CannotAuthorizeException("Invalid username or password");
 
-        return jwtUtils.generateToken(account.getId());
+        return jwtUtils.generateToken(account.id());
     }
 }

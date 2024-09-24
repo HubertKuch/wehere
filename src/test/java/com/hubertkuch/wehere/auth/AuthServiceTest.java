@@ -1,6 +1,7 @@
 package com.hubertkuch.wehere.auth;
 
 import com.hubertkuch.wehere.account.Account;
+import com.hubertkuch.wehere.account.AccountEntity;
 import com.hubertkuch.wehere.account.AccountService;
 import com.hubertkuch.wehere.account.Gender;
 import com.hubertkuch.wehere.utils.JWTUtils;
@@ -33,7 +34,7 @@ class AuthServiceTest {
 
     @Test
     void shouldReturnTokenAfterValidLogin() {
-        when(accountService.getAccount(anyString())).thenReturn(new Account("", "test", "test", Gender.FEMALE));
+        when(accountService.getAccount(anyString())).thenReturn(new Account("", "test", "test", "", Gender.FEMALE));
         when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
 
         String token = authService.login("test", "test");
@@ -50,7 +51,7 @@ class AuthServiceTest {
 
     @Test
     void shouldThrowExceptionWhenInvalidPassword() {
-        when(accountService.getAccount(anyString())).thenReturn(new Account("", "", "", Gender.FEMALE));
+        when(accountService.getAccount(anyString())).thenReturn(new Account("", "", "", "", Gender.FEMALE));
         when(passwordEncoder.matches(anyString(), anyString())).thenReturn(false);
 
         assertThatThrownBy(() -> authService.login("", ""));

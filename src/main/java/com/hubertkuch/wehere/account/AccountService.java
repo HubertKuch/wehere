@@ -15,10 +15,10 @@ public record AccountService(AccountRepository accountRepository, PasswordEncode
     public Account createAccount(String username, String password, Gender gender) throws ContentBusyException {
         if (exists(username)) throw new ContentBusyException("User with that username exists");
 
-        return accountRepository.save(new Account(UUID.randomUUID().toString(), username, passwordEncoder.encode(password), gender));
+        return Account.from(accountRepository.save(new AccountEntity(UUID.randomUUID().toString(), username, passwordEncoder.encode(password), gender)));
     }
 
     public Account getAccount(String username) {
-        return accountRepository.findByUsername(username).orElse(null);
+        return accountRepository.findByUsername(username).map(Account::from).orElse(null);
     }
 }

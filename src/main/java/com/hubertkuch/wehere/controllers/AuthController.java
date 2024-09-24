@@ -29,9 +29,14 @@ public record AuthController(AccountService accountService, AuthService authServ
         return AccountResponse.from(accountService.getAccount(String.valueOf(principal.getPrincipal())));
     }
 
-    public record AccountResponse(String id, String username, Gender gender) {
-        public static AccountResponse from(Account account) {
-            return new AccountResponse(account.getId(), account.getUsername(), account.getGender());
+    public record AccountResponse(String id, String username, String hashtag, Gender gender) {
+        public static AccountResponse from(Account accountEntity) {
+            return new AccountResponse(
+                    accountEntity.id(),
+                    accountEntity.username(),
+                    accountEntity.hashtag(),
+                    accountEntity.gender()
+            );
         }
     }
 

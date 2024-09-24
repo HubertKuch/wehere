@@ -10,7 +10,7 @@ Content-Type: application/json
 
 ###
 GET http://localhost:8080/api/v1/auth/account
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJVc2VyIERldGFpbHMiLCJpZCI6Ijc2YTg0YTFhLTliNmYtNGVkOS1iYWUzLTkyMzI4ODJkYjVlZSIsImlhdCI6MTcyNzE2NjEwNCwiaXNzIjoiV2VIZXJlIn0.aQCAHQ-KrM7UxfZQpsg0UOIHY-RP45z51wSAPxUBfPc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJVc2VyIERldGFpbHMiLCJpZCI6IjhiODZhNTRmLTRlZTgtNGM2NC05ZTcxLTQyNjAyMzQ0ZjU2MSIsImlhdCI6MTcyNzE5MDU4MSwiaXNzIjoiV2VIZXJlIn0.SPgvo_KJwPdYT9fTaeMQ08boVswYM4btI0K2TVbXlY4
 
 ###
 GET http://localhost:8080/api/v1/account/genders

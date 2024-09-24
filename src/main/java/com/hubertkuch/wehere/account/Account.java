@@ -1,20 +1,36 @@
 package com.hubertkuch.wehere.account;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.relational.core.mapping.Table;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
-@Table("account")
-public record Account(@Id String id, String username, String password) implements UserDetails, Persistable<String> {
+@Entity
+public final class Account implements UserDetails {
+    @Id
+    private String id;
+    private String username;
+    private String password;
+
+    public Account(String id, String username, String password) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+    }
+
+    public Account() {}
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
+    }
+
+    public String getId() {
+        return id;
     }
 
     @Override
@@ -27,13 +43,15 @@ public record Account(@Id String id, String username, String password) implement
         return username;
     }
 
-    @Override
-    public String getId() {
-        return id;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    @Override
-    public boolean isNew() {
-        return true;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

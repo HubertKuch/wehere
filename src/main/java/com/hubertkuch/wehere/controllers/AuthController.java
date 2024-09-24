@@ -30,7 +30,7 @@ public record AuthController(AccountService accountService, AuthService authServ
 
     public record AccountResponse(String id, String username) {
         public static AccountResponse from(Account account) {
-            return new AccountResponse(account.id(), account.username());
+            return new AccountResponse(account.getId(), account.getUsername());
         }
     }
 

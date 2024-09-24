@@ -29,9 +29,9 @@ public class AuthFiler extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws IOException {
         try {
-            if (request.getServletPath().toLowerCase().contains("/api/v1/auth/login") || request.getServletPath()
+            if (request.getServletPath().toLowerCase().contains("auth/login") || request.getServletPath()
                     .toLowerCase()
-                    .contains("/api/v1/auth/register")) {
+                    .contains("auth/register")) {
                 filterChain.doFilter(request, response);
                 return;
             }

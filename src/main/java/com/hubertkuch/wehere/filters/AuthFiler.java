@@ -28,7 +28,9 @@ public class AuthFiler extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws IOException, ServletException {
-        if (request.getServletPath().toLowerCase().contains("/api/v1/auth")) {
+        if (request.getServletPath().toLowerCase().contains("/api/v1/auth/login") || request.getServletPath()
+                .toLowerCase()
+                .contains("/api/v1/auth/register")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -36,17 +38,20 @@ public class AuthFiler extends OncePerRequestFilter {
         String header = request.getHeader("Authorization");
 
         if (header == null || !header.startsWith("Bearer ")) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT bearer token");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT bearer token");
             return;
         }
 
         String token = header.replace("Bearer ", "").trim();
         String userId = jwtUtils.verifyToken(token);
+
+        System.out.println(userId);
+
         UserDetails userDetails = accountDetailsService.loadUserByUsername(userId);
         var authToken =
                 new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
 
-        if(SecurityContextHolder.getContext().getAuthentication() == null){
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
             SecurityContextHolder.getContext().setAuthentication(authToken);
         }
 

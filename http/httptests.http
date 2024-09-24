@@ -8,10 +8,14 @@ Content-Type: application/json
 }
 
 ###
+GET http://localhost:8080/api/v1/auth/account
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJVc2VyIERldGFpbHMiLCJpZCI6ImFjZDZmODllLTMxMjYtNGQxNS04MTQ3LWM5Y2I4NWJjYTMxZSIsImlhdCI6MTcyNzEzNjQxNCwiaXNzIjoiV2VIZXJlIn0.tEx4RM2yDS6HKyU7hRwcf2MO1auNUwJXi2wF2JxSJj8
+
+###
 POST http://localhost:8080/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "username": "tes",
+  "username": "test",
   "password": "test"
 }

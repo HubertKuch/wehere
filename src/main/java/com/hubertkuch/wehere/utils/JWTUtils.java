@@ -25,6 +25,6 @@ public class JWTUtils {
     }
 
     public String verifyToken(String token) {
-        return JWT.require(Algorithm.HMAC256(secret)).build().verify(token).getClaim("id").toString();
+        return JWT.require(Algorithm.HMAC256(secret)).build().verify(token).getClaim("id").asString();
     }
 }

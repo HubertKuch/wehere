@@ -4,10 +4,9 @@ import com.hubertkuch.wehere.account.Account;
 import com.hubertkuch.wehere.account.AccountService;
 import com.hubertkuch.wehere.auth.AuthService;
 import com.hubertkuch.wehere.exceptions.ContentBusyException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -21,6 +20,12 @@ public record AuthController(AccountService accountService, AuthService authServ
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginBody body) {
         return new LoginResponse(authService.login(body.username(), body.password()));
+    }
+
+    @GetMapping("/account")
+    @PreAuthorize("isAuthenticated()")
+    public AccountResponse getAccount(Authentication principal) {
+        return AccountResponse.from(accountService.getAccount(String.valueOf(principal.getPrincipal())));
     }
 
     public record AccountResponse(String id, String username) {

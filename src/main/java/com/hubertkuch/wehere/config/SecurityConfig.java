@@ -21,7 +21,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    private static final String[] WHITE_LIST_URLS = {"/api/v1/auth", "/api/v1/auth/**", "/error"};
     private final AuthFiler authFiler;
 
     public SecurityConfig(AuthFiler authFiler) {
@@ -51,10 +50,12 @@ public class SecurityConfig {
     @Bean
     @Order(1)
     public SecurityFilterChain filterChain(
-            HttpSecurity http, AuthenticationProvider authenticationProvider
+            HttpSecurity http,
+            AuthenticationProvider authenticationProvider,
+            String[] whiteList
     ) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(req -> req.requestMatchers(WHITE_LIST_URLS)
+                .authorizeHttpRequests(req -> req.requestMatchers(whiteList)
                         .permitAll()
                         .anyRequest()
                         .authenticated())

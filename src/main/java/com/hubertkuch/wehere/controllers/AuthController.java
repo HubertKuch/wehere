@@ -2,6 +2,7 @@ package com.hubertkuch.wehere.controllers;
 
 import com.hubertkuch.wehere.account.Account;
 import com.hubertkuch.wehere.account.AccountService;
+import com.hubertkuch.wehere.account.Gender;
 import com.hubertkuch.wehere.auth.AuthService;
 import com.hubertkuch.wehere.exceptions.ContentBusyException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,7 +15,7 @@ public record AuthController(AccountService accountService, AuthService authServ
 
     @PostMapping("/register")
     public AccountResponse createAccount(@RequestBody AccountBody body) throws ContentBusyException {
-        return AccountResponse.from(accountService.createAccount(body.username, body.password));
+        return AccountResponse.from(accountService.createAccount(body.username, body.password, body.gender));
     }
 
     @PostMapping("/login")
@@ -28,9 +29,9 @@ public record AuthController(AccountService accountService, AuthService authServ
         return AccountResponse.from(accountService.getAccount(String.valueOf(principal.getPrincipal())));
     }
 
-    public record AccountResponse(String id, String username) {
+    public record AccountResponse(String id, String username, Gender gender) {
         public static AccountResponse from(Account account) {
-            return new AccountResponse(account.getId(), account.getUsername());
+            return new AccountResponse(account.getId(), account.getUsername(), account.getGender());
         }
     }
 
@@ -40,6 +41,6 @@ public record AuthController(AccountService accountService, AuthService authServ
     public record LoginBody(String username, String password) {
     }
 
-    public record AccountBody(String username, String password) {
+    public record AccountBody(String username, String password, Gender gender) {
     }
 }

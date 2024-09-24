@@ -12,14 +12,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class AuthFiler extends OncePerRequestFilter {
     private final JWTUtils jwtUtils;
     private final UserDetailsService accountDetailsService;
+    private final String[] whiteList;
 
-    public AuthFiler(JWTUtils jwtUtils, UserDetailsService accountDetailsService) {
+    public AuthFiler(JWTUtils jwtUtils, UserDetailsService accountDetailsService, String[] whiteList) {
         this.jwtUtils = jwtUtils;
         this.accountDetailsService = accountDetailsService;
+        this.whiteList = whiteList;
     }
 
     @Override
@@ -27,11 +30,9 @@ public class AuthFiler extends OncePerRequestFilter {
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain
-    ) throws IOException {
+    ) throws IOException, ServletException {
         try {
-            if (request.getServletPath().toLowerCase().contains("auth/login") || request.getServletPath()
-                    .toLowerCase()
-                    .contains("auth/register")) {
+            if (Arrays.stream(whiteList).anyMatch(url -> request.getServletPath().toLowerCase().contains(url))) {
                 filterChain.doFilter(request, response);
                 return;
             }
@@ -56,8 +57,9 @@ public class AuthFiler extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);
         } catch (Exception exception) {
-            logger.error(exception.getMessage());
+            logger.error("Auth filter error: " +exception.getMessage());
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT bearer token");
+            throw exception;
         }
     }
 }

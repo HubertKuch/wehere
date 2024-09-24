@@ -16,6 +16,11 @@ public class AuthConfig {
         this.accountRepository = accountRepository;
     }
 
+    @Bean(name = "whiteList")
+    public String[] whiteList() {
+        return new String[]{"/api/v1/auth/login", "/api/v1/auth/register", "/error", "/api/v1/account/genders"};
+    }
+
     @Bean
     public UserDetailsService userDetailsService() {
         return id -> accountRepository.findById(id)
@@ -24,6 +29,6 @@ public class AuthConfig {
 
     @Bean
     public AuthFiler authFiler(JWTUtils jwtUtils, UserDetailsService userDetailsService) {
-        return new AuthFiler(jwtUtils, userDetailsService);
+        return new AuthFiler(jwtUtils, userDetailsService, whiteList());
     }
 }

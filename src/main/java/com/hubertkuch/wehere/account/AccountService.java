@@ -12,10 +12,10 @@ public record AccountService(AccountRepository accountRepository, PasswordEncode
         return accountRepository.findByUsername(username).isPresent();
     }
 
-    public Account createAccount(String username, String password) throws ContentBusyException {
+    public Account createAccount(String username, String password, Gender gender) throws ContentBusyException {
         if (exists(username)) throw new ContentBusyException("User with that username exists");
 
-        return accountRepository.save(new Account(UUID.randomUUID().toString(), username, passwordEncoder.encode(password)));
+        return accountRepository.save(new Account(UUID.randomUUID().toString(), username, passwordEncoder.encode(password), gender));
     }
 
     public Account getAccount(String username) {

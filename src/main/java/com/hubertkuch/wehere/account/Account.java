@@ -4,10 +4,8 @@ import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.io.Serial;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 public final class Account implements UserDetails {
@@ -15,11 +13,14 @@ public final class Account implements UserDetails {
     private String id;
     private String username;
     private String password;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
-    public Account(String id, String username, String password) {
+    public Account(String id, String username, String password, Gender gender) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.gender = gender;
     }
 
     public Account() {}
@@ -41,6 +42,14 @@ public final class Account implements UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public void setPassword(String password) {

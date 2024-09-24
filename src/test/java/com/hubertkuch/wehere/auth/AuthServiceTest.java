@@ -2,6 +2,7 @@ package com.hubertkuch.wehere.auth;
 
 import com.hubertkuch.wehere.account.Account;
 import com.hubertkuch.wehere.account.AccountService;
+import com.hubertkuch.wehere.account.Gender;
 import com.hubertkuch.wehere.utils.JWTUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,7 @@ class AuthServiceTest {
 
     @Test
     void shouldReturnTokenAfterValidLogin() {
-        when(accountService.getAccount(anyString())).thenReturn(new Account("", "test", "test"));
+        when(accountService.getAccount(anyString())).thenReturn(new Account("", "test", "test", Gender.FEMALE));
         when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
 
         String token = authService.login("test", "test");
@@ -49,7 +50,7 @@ class AuthServiceTest {
 
     @Test
     void shouldThrowExceptionWhenInvalidPassword() {
-        when(accountService.getAccount(anyString())).thenReturn(new Account("", "", ""));
+        when(accountService.getAccount(anyString())).thenReturn(new Account("", "", "", Gender.FEMALE));
         when(passwordEncoder.matches(anyString(), anyString())).thenReturn(false);
 
         assertThatThrownBy(() -> authService.login("", ""));

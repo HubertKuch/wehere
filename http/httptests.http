@@ -3,19 +3,23 @@ POST http://localhost:8080/api/v1/auth/register
 Content-Type: application/json
 
 {
-  "username": "test",
-  "password": "test"
+  "username": "test3",
+  "password": "test3",
+  "gender": "FEMALE"
 }
 
 ###
 GET http://localhost:8080/api/v1/auth/account
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJVc2VyIERldGFpbHMiLCJpZCI6ImFjZDZmODllLTMxMjYtNGQxNS04MTQ3LWM5Y2I4NWJjYTMxZSIsImlhdCI6MTcyNzEzNjQxNCwiaXNzIjoiV2VIZXJlIn0.tEx4RM2yDS6HKyU7hRwcf2MO1auNUwJXi2wF2JxSJj8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJVc2VyIERldGFpbHMiLCJpZCI6Ijc2YTg0YTFhLTliNmYtNGVkOS1iYWUzLTkyMzI4ODJkYjVlZSIsImlhdCI6MTcyNzE2NjEwNCwiaXNzIjoiV2VIZXJlIn0.aQCAHQ-KrM7UxfZQpsg0UOIHY-RP45z51wSAPxUBfPc
+
+###
+GET http://localhost:8080/api/v1/account/genders
 
 ###
 POST http://localhost:8080/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "username": "test",
-  "password": "test"
+  "username": "test3",
+  "password": "test3"
 }

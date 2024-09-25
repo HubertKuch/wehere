@@ -19,12 +19,17 @@ public record FriendshipService(
     /**
      * Makes a friendship between initiator and hashtag account
      *
-     * @throws CannotMakeFriendshipException when hashtag is invalid or request was already sent but status is PENDING or ACCEPTED
+     * @throws CannotMakeFriendshipException when hashtag is invalid, request was already sent but status is PENDING or ACCEPTED and when hashtaged user has the same id as initiator
+     *
      */
     public Friendship makeFriendship(String initiatorId, String hashtag) throws CannotMakeFriendshipException {
         var hashtagAccount = accountService.getAccountByHashtag(hashtag);
 
         if (hashtagAccount == null) throw new CannotMakeFriendshipException("Invalid hashtag of friend");
+
+        if (initiatorId.equals(hashtagAccount.id())) {
+            throw new CannotMakeFriendshipException("You can't make a friendship with yourself");
+        }
 
         if (friendshipRepository.findAlreadyExistingRequest(
                 initiatorId,
@@ -48,9 +53,10 @@ public record FriendshipService(
 
     /**
      * Accepts a friendship request. Only receiver of request can accept request.
+     *
      * @throws CannotFindFriendshipException when <b>friendshipId</b> is invalid
      * @throws CannotMakeFriendshipException when id of <b>requestReceiverId</b> is different of <b>friendship second one id</b>
-     * */
+     */
     public Friendship acceptFriendship(String requestReceiverId, String friendshipId) throws CannotFindFriendshipException, CannotMakeFriendshipException {
         FriendshipEntity friendshipEntity = friendshipRepository.findById(friendshipId).orElseThrow(CannotFindFriendshipException::new);
 

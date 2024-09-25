@@ -32,7 +32,7 @@ class FriendshipServiceTest {
 
     @Test
     void shouldReturnValidFriendship() throws CannotMakeFriendshipException {
-        when(accountService.getAccountByHashtag(anyString())).thenReturn(new Account("", "", "", "", Gender.MALE));
+        when(accountService.getAccountByHashtag(anyString())).thenReturn(new Account("diffId", "", "", "", Gender.MALE));
         when(friendshipRepository.findAlreadyExistingRequest(anyString(),
                 anyString()
         )).thenReturn(Optional.empty());
@@ -55,6 +55,13 @@ class FriendshipServiceTest {
     void shouldThrowExceptionWhenRequestWasAlreadySent() {
         when(accountService.getAccountByHashtag(anyString())).thenReturn(new Account("", "", "", "", Gender.MALE));
         when(friendshipRepository.findAlreadyExistingRequest(anyString(), anyString())).thenReturn(Optional.of(new FriendshipEntity()));
+
+        assertThrows(CannotMakeFriendshipException.class, () -> friendshipService.makeFriendship("", ""));
+    }
+
+    @Test
+    void shouldThrowCannotMakeFriendshipExceptionWhenHashtagedUserHasTheSameIdAsInitiator() {
+        when(accountService.getAccountByHashtag(anyString())).thenReturn(new Account("", "", "", "", Gender.MALE));
 
         assertThrows(CannotMakeFriendshipException.class, () -> friendshipService.makeFriendship("", ""));
     }

@@ -17,7 +17,7 @@ public class FriendshipEntity {
     @ManyToOne
     @JoinColumn(name = "second_friend_id", referencedColumnName = "id")
     private AccountEntity secondFriend;
-    private Instant createdAt;
+    private Instant createdAt = Instant.now();
 
     @Enumerated(EnumType.STRING)
     private FriendshipApprovalStatus status;

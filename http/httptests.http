@@ -3,8 +3,8 @@ POST http://localhost:8080/api/v1/auth/register
 Content-Type: application/json
 
 {
-  "username": "test3",
-  "password": "test3",
+  "username": "test1",
+  "password": "test1",
   "gender": "FEMALE"
 }
 
@@ -14,11 +14,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJVc2VyIERld
 
 ###
 POST http://localhost:8080/api/v1/friendships
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJVc2VyIERldGFpbHMiLCJpZCI6ImFjZDZmODllLTMxMjYtNGQxNS04MTQ3LWM5Y2I4NWJjYTMxZSIsImlhdCI6MTcyNzIxNTExNiwiaXNzIjoiV2VIZXJlIn0.bC6sAkb_b78XepyKLs1CPXCf3Un1w6EKs52ZOH-L7LU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJVc2VyIERldGFpbHMiLCJpZCI6ImU5MmQ5NGZmLWQ2MTMtNGQyOS05MmM0LTZhZGUzM2I3ZjNiYyIsImlhdCI6MTcyNzI0NTIxNywiaXNzIjoiV2VIZXJlIn0.G7ymdk_dwBhSyr_2-TajL-k0R3t764LA4as4ZdAZrA8
 Content-Type: application/json
 
 {
-  "hashtag": "42dsa"
+  "hashtag": "f57ca"
 }
 
 ###
@@ -29,6 +29,6 @@ POST http://localhost:8080/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "username": "test",
-  "password": "test"
+  "username": "test1",
+  "password": "test1"
 }

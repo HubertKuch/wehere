@@ -23,7 +23,7 @@ public record FriendshipService(
         if (friendshipRepository.findAlreadyExistingRequest(
                 initiatorId,
                 hashtagAccount.id()
-        ).isEmpty()) {
+        ).isPresent()) {
             throw new CannotMakeFriendshipException("Request already sent");
         }
 

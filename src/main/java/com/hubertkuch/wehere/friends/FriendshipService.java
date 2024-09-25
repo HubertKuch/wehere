@@ -2,6 +2,8 @@ package com.hubertkuch.wehere.friends;
 
 import com.hubertkuch.wehere.account.AccountRepository;
 import com.hubertkuch.wehere.account.AccountService;
+import com.hubertkuch.wehere.controllers.FriendshipController;
+import com.hubertkuch.wehere.friends.exceptions.CannotFindFriendshipException;
 import com.hubertkuch.wehere.friends.exceptions.CannotMakeFriendshipException;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +43,24 @@ public record FriendshipService(
 
     public Set<Friendship> friendships(String accountId) {
         return friendshipRepository.findYourFriends(accountId).stream().map(Friendship::from).collect(Collectors.toSet());
+    }
+
+    /**
+     * Accepts a friendship request. Only receiver of request can accept request.
+     * @throws CannotFindFriendshipException when <b>friendshipId</b> is invalid
+     * @throws CannotMakeFriendshipException when id of <b>requestReceiverId</b> is different of <b>friendship second one id</b>
+     * */
+    public Friendship acceptFriendship(String requestReceiverId, String friendshipId) throws CannotFindFriendshipException, CannotMakeFriendshipException {
+        FriendshipEntity friendshipEntity = friendshipRepository.findById(friendshipId).orElseThrow(CannotFindFriendshipException::new);
+
+        if (!friendshipEntity.getSecondFriend().getId().equals(requestReceiverId)) {
+            throw new CannotMakeFriendshipException("Only receiver can accept a friendship request");
+        }
+
+        friendshipEntity.setStatus(FriendshipApprovalStatus.ACCEPTED);
+        
+        friendshipRepository.save(friendshipEntity);
+
+        return Friendship.from(friendshipEntity);
     }
 }

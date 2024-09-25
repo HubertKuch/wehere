@@ -13,9 +13,9 @@ public interface FriendshipRepository extends JpaRepository<FriendshipEntity, St
                        SELECT f.* FROM friendship f WHERE\s
                    (f.status = 'PENDING' OR f.status = 'ACCEPTED')
                        AND (
-                           (f.first_friend_id = :first_friend_id OR f.second_friend_id = :second_friend_id)
+                           (f.first_friend_id = :first_friend_id AND f.second_friend_id = :second_friend_id)
                            OR
-                           (f.first_friend_id = :second_friend_id OR f.second_friend_id = :first_friend_id)
+                           (f.first_friend_id = :second_friend_id AND f.second_friend_id = :first_friend_id)
                        )
                   \s""", nativeQuery = true)
     Optional<FriendshipEntity> findAlreadyExistingRequest(

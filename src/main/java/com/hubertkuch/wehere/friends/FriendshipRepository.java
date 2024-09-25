@@ -31,4 +31,10 @@ public interface FriendshipRepository extends JpaRepository<FriendshipEntity, St
                        )
 """)
     Set<FriendshipEntity> findYourFriends(@Param("account_id") String accountId);
+
+    @Query(nativeQuery = true,value = """
+                                 SELECT f.* FROM friendship f WHERE\s
+                               f.status = 'PENDING' AND f.second_friend_id = :account_id
+            """)
+    Set<FriendshipEntity> findYourPendingRequests(@Param("account_id") String accountId);
 }

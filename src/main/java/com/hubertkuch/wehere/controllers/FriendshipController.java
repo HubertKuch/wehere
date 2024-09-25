@@ -26,8 +26,18 @@ public record FriendshipController(FriendshipService friendshipService) {
                 .map(FriendshipResponse::from).collect(Collectors.toSet());
     }
 
+    @GetMapping("/pending")
     @PreAuthorize("isAuthenticated()")
+    public Set<FriendshipResponse> pendingRequests(Authentication authentication) {
+        String secondOneId = String.valueOf(authentication.getCredentials());
+
+        return friendshipService
+                .pendingRequests(secondOneId).stream()
+                .map(FriendshipResponse::from).collect(Collectors.toSet());
+    }
+
     @PostMapping("/:friendshipId/accept")
+    @PreAuthorize("isAuthenticated()")
     public FriendshipResponse acceptFriendship(@RequestParam("friendshipId") String friendshipId, Authentication authentication) throws CannotMakeFriendshipException, CannotFindFriendshipException {
         String requestReceiverId = String.valueOf(authentication.getCredentials());
 

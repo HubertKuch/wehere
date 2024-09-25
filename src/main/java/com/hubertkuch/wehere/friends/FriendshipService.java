@@ -5,6 +5,7 @@ import com.hubertkuch.wehere.account.AccountService;
 import com.hubertkuch.wehere.controllers.FriendshipController;
 import com.hubertkuch.wehere.friends.exceptions.CannotFindFriendshipException;
 import com.hubertkuch.wehere.friends.exceptions.CannotMakeFriendshipException;
+import io.micrometer.observation.ObservationFilter;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -58,9 +59,13 @@ public record FriendshipService(
         }
 
         friendshipEntity.setStatus(FriendshipApprovalStatus.ACCEPTED);
-        
+
         friendshipRepository.save(friendshipEntity);
 
         return Friendship.from(friendshipEntity);
+    }
+
+    public Set<Friendship> pendingRequests(String secondOneId) {
+        return friendshipRepository.findYourPendingRequests(secondOneId).stream().map(Friendship::from).collect(Collectors.toSet());
     }
 }

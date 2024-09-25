@@ -74,4 +74,16 @@ public record FriendshipService(
     public Set<Friendship> pendingRequests(String secondOneId) {
         return friendshipRepository.findYourPendingRequests(secondOneId).stream().map(Friendship::from).collect(Collectors.toSet());
     }
+
+    /**
+     * @throws CannotFindFriendshipException when friendship between <b>yourId</b> and <b>friendId</b> was not found
+     * */
+    public Friendship removeFriendshipWith(String yourId, String friendId) throws CannotFindFriendshipException {
+        var friendshipEntity = friendshipRepository.findAlreadyExistingRequest(yourId, friendId).
+                orElseThrow(CannotFindFriendshipException::new);
+
+        friendshipRepository.delete(friendshipEntity);
+
+        return Friendship.from(friendshipEntity);
+    }
 }

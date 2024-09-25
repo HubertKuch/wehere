@@ -8,7 +8,6 @@ import com.hubertkuch.wehere.friends.exceptions.CannotMakeFriendshipException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.service.annotation.PutExchange;
 
 import java.time.Instant;
 import java.util.Set;
@@ -38,7 +37,10 @@ public record FriendshipController(FriendshipService friendshipService) {
 
     @PostMapping("/:friendshipId/accept")
     @PreAuthorize("isAuthenticated()")
-    public FriendshipResponse acceptFriendship(@RequestParam("friendshipId") String friendshipId, Authentication authentication) throws CannotMakeFriendshipException, CannotFindFriendshipException {
+    public FriendshipResponse acceptFriendship(
+            @RequestParam("friendshipId") String friendshipId,
+            Authentication authentication
+    ) throws CannotMakeFriendshipException, CannotFindFriendshipException {
         String requestReceiverId = String.valueOf(authentication.getCredentials());
 
         return FriendshipResponse.from(friendshipService.acceptFriendship(requestReceiverId, friendshipId));
@@ -46,17 +48,33 @@ public record FriendshipController(FriendshipService friendshipService) {
 
     @PostMapping
     @PreAuthorize("isAuthenticated()")
-    public FriendshipResponse makeFriendship(Authentication authentication, @RequestBody MakeFriendshipBody body) throws CannotMakeFriendshipException {
+    public FriendshipResponse makeFriendship(
+            Authentication authentication,
+            @RequestBody MakeFriendshipBody body
+    ) throws CannotMakeFriendshipException {
         String initiatorId = String.valueOf(authentication.getCredentials());
 
         return FriendshipResponse.from(friendshipService.makeFriendship(initiatorId, body.hashtag));
     }
 
-    public record FriendshipResponse(String id,
-                                     AuthController.AccountResponse firstOne,
-                                     AuthController.AccountResponse secondOne,
-                                     Instant createdAt,
-                                     FriendshipApprovalStatus friendshipApprovalStatus
+    @DeleteMapping("/:friendId/remove")
+    @PreAuthorize("isAuthenticated()")
+    public FriendshipResponse removeFriendship(
+            Authentication authentication,
+            @RequestParam("friendId") String friendshipId
+    ) throws CannotFindFriendshipException {
+        String yourId = String.valueOf(authentication.getCredentials());
+        Friendship removedFriendship = friendshipService.removeFriendshipWith(yourId, friendshipId);
+
+        return FriendshipResponse.from(removedFriendship);
+    }
+
+    public record FriendshipResponse(
+            String id,
+            AuthController.AccountResponse firstOne,
+            AuthController.AccountResponse secondOne,
+            Instant createdAt,
+            FriendshipApprovalStatus friendshipApprovalStatus
     ) {
         public static FriendshipResponse from(Friendship friendship) {
             return new FriendshipResponse(friendship.id(),

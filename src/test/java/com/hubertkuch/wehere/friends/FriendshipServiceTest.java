@@ -104,4 +104,27 @@ class FriendshipServiceTest {
 
         assertThrows(CannotFindFriendshipException.class, () -> friendshipService.acceptFriendship("", "friendship_id"));
     }
+
+    @Test
+    void shouldRemoveFriendship() throws CannotFindFriendshipException {
+        when(friendshipRepository.findAlreadyExistingRequest(anyString(), anyString())).thenAnswer(ans -> {
+            var friendshipEntity = new FriendshipEntity();
+
+            friendshipEntity.setFirstFriend(new AccountEntity("", "", "", Gender.FEMALE));
+            friendshipEntity.setSecondFriend(new AccountEntity("", "", "", Gender.FEMALE));
+
+            return Optional.of(friendshipEntity);
+        });
+
+        Friendship friendship = friendshipService.removeFriendshipWith("your_id", "friend_id");
+
+        assertNotNull(friendship);
+    }
+
+    @Test
+    void shouldThrowCannotFindFriendshipExceptionWhenDeletesNotExistingFriendship() throws CannotFindFriendshipException {
+        when(friendshipRepository.findAlreadyExistingRequest(anyString(), anyString())).thenReturn(Optional.empty());
+
+        assertThrows(CannotFindFriendshipException.class, () -> friendshipService.removeFriendshipWith("", "friend_id"));
+    }
 }

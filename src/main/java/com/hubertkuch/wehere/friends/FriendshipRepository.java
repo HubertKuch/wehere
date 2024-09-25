@@ -4,7 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface FriendshipRepository extends JpaRepository<FriendshipEntity, String> {
     @Query(value = """
@@ -20,4 +22,13 @@ public interface FriendshipRepository extends JpaRepository<FriendshipEntity, St
             @Param("first_friend_id") String firstFriendId,
             @Param("second_friend_id") String secondFriendId
     );
+
+    @Query(nativeQuery = true,value = """
+                     SELECT f.* FROM friendship f WHERE\s
+                   f.status = 'ACCEPTED'
+                       AND (
+                           f.first_friend_id = :account_id OR f.second_friend_id = :account_id
+                       )
+""")
+    Set<FriendshipEntity> findYourFriends(@Param("account_id") String accountId);
 }

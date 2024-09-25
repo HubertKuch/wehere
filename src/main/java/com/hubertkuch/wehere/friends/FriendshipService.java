@@ -5,6 +5,9 @@ import com.hubertkuch.wehere.account.AccountService;
 import com.hubertkuch.wehere.friends.exceptions.CannotMakeFriendshipException;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
 public record FriendshipService(
         AccountService accountService, AccountRepository accountRepository, FriendshipRepository friendshipRepository
@@ -13,7 +16,7 @@ public record FriendshipService(
     /**
      * Makes a friendship between initiator and hashtag account
      *
-     * @throws CannotMakeFriendshipException when hashtag is invalid or request was already sent but status is pending
+     * @throws CannotMakeFriendshipException when hashtag is invalid or request was already sent but status is PENDING or ACCEPTED
      */
     public Friendship makeFriendship(String initiatorId, String hashtag) throws CannotMakeFriendshipException {
         var hashtagAccount = accountService.getAccountByHashtag(hashtag);
@@ -34,5 +37,9 @@ public record FriendshipService(
         friendshipRepository.save(entity);
 
         return Friendship.from(entity);
+    }
+
+    public Set<Friendship> friendships(String accountId) {
+        return friendshipRepository.findYourFriends(accountId).stream().map(Friendship::from).collect(Collectors.toSet());
     }
 }

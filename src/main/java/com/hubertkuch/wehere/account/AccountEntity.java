@@ -1,5 +1,6 @@
 package com.hubertkuch.wehere.account;
 
+import com.hubertkuch.wehere.avatar.AvatarEntity;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,21 +19,26 @@ public final class AccountEntity implements UserDetails {
     private String hashtag;
     @Enumerated(EnumType.STRING)
     private Gender gender;
+    @OneToOne
+    @JoinColumn(referencedColumnName = "account_id", name = "id")
+    private AvatarEntity avatar;
 
-    public AccountEntity(String id, String username, String password, String hashtag, Gender gender) {
+    public AccountEntity(String id, String username, String password, String hashtag, Gender gender, AvatarEntity avatar) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.hashtag = hashtag;
         this.gender = gender;
+        this.avatar = avatar;
     }
 
-    public AccountEntity(String id, String username, String password, Gender gender) {
+    public AccountEntity(String id, String username, String password, Gender gender, AvatarEntity avatar) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.hashtag = generateHashtag();
         this.gender = gender;
+        this.avatar = avatar;
     }
 
     public AccountEntity() {
@@ -87,5 +93,13 @@ public final class AccountEntity implements UserDetails {
 
     public void setHashtag(String hashtag) {
         this.hashtag = hashtag;
+    }
+
+    public AvatarEntity getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(AvatarEntity avatar) {
+        this.avatar = avatar;
     }
 }

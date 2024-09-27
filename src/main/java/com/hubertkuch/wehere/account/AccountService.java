@@ -4,6 +4,8 @@ import com.hubertkuch.wehere.exceptions.ContentBusyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.util.UUID;
 
 @Service
@@ -12,8 +14,10 @@ public record AccountService(AccountRepository accountRepository, PasswordEncode
         return accountRepository.findByUsername(username).isPresent();
     }
 
-    public Account createAccount(String username, String password, Gender gender) throws ContentBusyException {
+    public Account createAccount(String username, String password, Gender gender, String avatar) throws ContentBusyException {
         if (exists(username)) throw new ContentBusyException("User with that username exists");
+
+        Image image = ImageIO.re
 
         return Account.from(accountRepository.save(new AccountEntity(UUID.randomUUID().toString(), username, passwordEncoder.encode(password), gender)));
     }

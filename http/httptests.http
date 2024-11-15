@@ -3,31 +3,36 @@ POST http://localhost:8080/api/v1/auth/register
 Content-Type: application/json
 
 {
-  "username": "test2",
-  "password": "test2",
+  "username": "test1",
+  "password": "test1",
   "gender": "FEMALE"
 }
 
 ###
 GET http://localhost:8080/api/v1/auth/account
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJVc2VyIERldGFpbHMiLCJpZCI6ImFjZDZmODllLTMxMjYtNGQxNS04MTQ3LWM5Y2I4NWJjYTMxZSIsImlhdCI6MTcyNzIxMzYyMywiaXNzIjoiV2VIZXJlIn0.rq7opgRUWKAlWeSXBJ6hG0S3h10OjtMauWd_yXFvy6g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJVc2VyIERldGFpbHMiLCJpZCI6IjA4MGIwMDZjLTc3MjAtNDUwMC1iODhhLTY0NTkzOTRjMjE1YiIsImlhdCI6MTczMTY2OTYzNCwiaXNzIjoiV2VIZXJlIn0.Dy4riM1GSVtIpTrF4WW5fjntmDY1qXnVpgJiQVDk9M8
 
 ###
 POST http://localhost:8080/api/v1/friendships
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJVc2VyIERldGFpbHMiLCJpZCI6IjlhZjE1ZDRjLWZmZjUtNDEwNS1iZjk0LTQ2MDQxNmVhMjVkYiIsImlhdCI6MTcyNzI0NjQwOCwiaXNzIjoiV2VIZXJlIn0.Piy7cCRojYFxoAB5cew19RnV69i-t-O9p6C-H4ixrvo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJVc2VyIERldGFpbHMiLCJpZCI6IjA4MGIwMDZjLTc3MjAtNDUwMC1iODhhLTY0NTkzOTRjMjE1YiIsImlhdCI6MTczMTY2OTYzNCwiaXNzIjoiV2VIZXJlIn0.Dy4riM1GSVtIpTrF4WW5fjntmDY1qXnVpgJiQVDk9M8
 Content-Type: application/json
 
 {
-  "hashtag": "8d2a6"
+  "hashtag": "9eb68"
 }
 
 ###
 GET http://localhost:8080/api/v1/friendships
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJVc2VyIERldGFpbHMiLCJpZCI6IjlhZjE1ZDRjLWZmZjUtNDEwNS1iZjk0LTQ2MDQxNmVhMjVkYiIsImlhdCI6MTcyNzI0NjU0NCwiaXNzIjoiV2VIZXJlIn0.gznOSkEbX5LxaqzHrwLMwmZ9kGGRRUp6Mg0Qmnpiy-o
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJVc2VyIERldGFpbHMiLCJpZCI6IjIzMmI2MDAyLTcwYjYtNGJjNS04ZjJhLTIxZjgzZThkZGY3MyIsImlhdCI6MTczMTY2OTgzOSwiaXNzIjoiV2VIZXJlIn0.z1LwSuoJM_sC5oNhsyANSu8YXyikooMYFs4bMBs7o_8
 
 ###
 GET http://localhost:8080/api/v1/friendships/pending
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJVc2VyIERldGFpbHMiLCJpZCI6IjlhZjE1ZDRjLWZmZjUtNDEwNS1iZjk0LTQ2MDQxNmVhMjVkYiIsImlhdCI6MTcyNzI1MTY5MCwiaXNzIjoiV2VIZXJlIn0.tKIfGAkGgo9ldsiwp3Fuc_XU_zUp2tddydPu5i5p4gw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJVc2VyIERldGFpbHMiLCJpZCI6IjIzMmI2MDAyLTcwYjYtNGJjNS04ZjJhLTIxZjgzZThkZGY3MyIsImlhdCI6MTczMTY2OTgzOSwiaXNzIjoiV2VIZXJlIn0.z1LwSuoJM_sC5oNhsyANSu8YXyikooMYFs4bMBs7o_8
+
+###
+POST http://localhost:8080/api/v1/friendships/:friendshipId/accept?
+    friendshipId=d7012469-f246-4e04-b5b2-748c34ed8fe1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJVc2VyIERldGFpbHMiLCJpZCI6IjIzMmI2MDAyLTcwYjYtNGJjNS04ZjJhLTIxZjgzZThkZGY3MyIsImlhdCI6MTczMTY2OTgzOSwiaXNzIjoiV2VIZXJlIn0.z1LwSuoJM_sC5oNhsyANSu8YXyikooMYFs4bMBs7o_8
 
 ###
 GET http://localhost:8080/api/v1/account/genders
@@ -37,6 +42,6 @@ POST http://localhost:8080/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "username": "test",
-  "password": "test"
+  "username": "test1",
+  "password": "test1"
 }

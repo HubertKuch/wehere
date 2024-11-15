@@ -59,7 +59,6 @@ public class AuthFiler extends OncePerRequestFilter {
         } catch (Exception exception) {
             logger.error("Auth filter error: " +exception.getMessage());
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT bearer token");
-            throw exception;
         }
     }
 }

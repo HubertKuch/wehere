@@ -1,12 +1,12 @@
 package com.hubertkuch.wehere.config;
 
 import com.hubertkuch.wehere.account.AccountRepository;
+import com.hubertkuch.wehere.exceptions.CannotAuthorizeException;
 import com.hubertkuch.wehere.filters.AuthFiler;
 import com.hubertkuch.wehere.utils.JWTUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @Configuration
 public class AuthConfig {
@@ -24,7 +24,7 @@ public class AuthConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return id -> accountRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
+                .orElseThrow(() -> new CannotAuthorizeException("User not found with id: " + id));
     }
 
     @Bean
